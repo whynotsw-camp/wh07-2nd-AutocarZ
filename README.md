@@ -1,5 +1,50 @@
-# 2nd-template
-whynotsw-camp 2nd-template 레포지토리입니다.
+# 🚍 AutocarZ - 자율주행 중 로드킬 안전 강화 및 자동 신고 서비스
+
+# 🙋‍♂️🙋‍♀️ 팀원 소개
+
+<table>
+  <tr>
+    <th>김지영</th>
+    <th>이유석</th>
+    <th>사석훈</th>
+    <th>신윤서</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/3c347b94-3b95-4d42-82ea-ee20c7dfcc45" width="100"/></td>
+    <td><img src="https://github.com/user-attachments/assets/44c93308-1e79-4dc5-8ac0-a2dbd30785e8" width="100"/></td>
+    <td><img src="https://github.com/user-attachments/assets/26c18044-d8ab-4b8b-a5a9-fb6ccd8b1071" width="100"/></td>
+    <td><img src="https://github.com/user-attachments/assets/9b3cd675-6764-4b3e-bca3-7a356b20843f" width="100"/></td>
+  </tr>
+  <tr>
+    <td>PM<br>FrontEnd</td>
+    <td>팀원<br>Data Engineer</td>
+    <td>팀원<br>Data Engineer<br>Infra</td>
+    <td>팀원<br>AI/ML Engineer</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/jiyoung1634">
+        <img src="https://img.shields.io/badge/GitHub-Link-black?logo=github&style=flat"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/LYSS-LGU">
+        <img src="https://img.shields.io/badge/GitHub-Link-black?logo=github&style=flat"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/Clear-head">
+        <img src="https://img.shields.io/badge/GitHub-Link-black?logo=github&style=flat"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/irisyshin">
+        <img src="https://img.shields.io/badge/GitHub-Link-black?logo=github&style=flat"/>
+      </a>
+    </td>
+  </tr>
+</table>
+
 
 ----------------------------
 
