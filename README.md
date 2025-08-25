@@ -17,8 +17,8 @@
   </tr>
   <tr>
     <td>PM<br>임베디드 시스템 개발자</td>
-    <td>팀원<br>Data Engineer</td>
-    <td>팀원<br>Data Engineer<br>Infra</td>
+    <td>팀원<br>임베디드 시스템 개발자<br>분석가</td>
+    <td>팀원<br>Full-Stack 개발자</td>
     <td>팀원<br>FrontEnd</td>
   </tr>
   <tr>
