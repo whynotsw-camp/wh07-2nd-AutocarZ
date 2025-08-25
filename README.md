@@ -16,10 +16,10 @@
     <td><img src="https://github.com/user-attachments/assets/9b3cd675-6764-4b3e-bca3-7a356b20843f" width="100"/></td>
   </tr>
   <tr>
-    <td>PM<br>임베디드 시스템 개발자</td>
+    <td>PM<br>임베디드 시스템 개발자<br>분석가</td>
     <td>팀원<br>임베디드 시스템 개발자<br>분석가</td>
-    <td>팀원<br>Full-Stack 개발자</td>
-    <td>팀원<br>FrontEnd</td>
+    <td>팀원<br>Full-Stack 개발자<br>분석가</td>
+    <td>팀원<br>FrontEnd<br>분석가</td>
   </tr>
   <tr>
     <td>
