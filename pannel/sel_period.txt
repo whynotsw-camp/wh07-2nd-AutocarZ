@@ -1,0 +1,38 @@
+/* year_sel이 비정상이면 올해로; 표시(__text)는 MM/Qn/Hn, 값(__value)은 YYYY-MM / YYYY-Qn / YYYY-Hn */
+
+-- 월 (1~12)
+SELECT LPAD(m.m,2,'0') AS __text,                          -- 드롭다운에 01,02,…
+       CONCAT(v.y, '-', LPAD(m.m,2,'0')) AS __value        -- 필터용 값은 YYYY-MM
+FROM (
+  SELECT CAST(IF('${year_sel}' REGEXP '^[0-9]{4}$','${year_sel}',YEAR(NOW())) AS UNSIGNED) AS y,
+         '${agg_interval}' AS mode
+) v
+JOIN (
+  SELECT 1 m UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+  UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+  UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
+) m ON v.mode='월'
+
+UNION ALL
+
+-- 분기 (Q1~Q4)
+SELECT CONCAT('Q', q.q) AS __text,                          -- Q1, Q2, …
+       CONCAT(v.y, '-Q', q.q) AS __value                   -- YYYY-Qn
+FROM (
+  SELECT CAST(IF('${year_sel}' REGEXP '^[0-9]{4}$','${year_sel}',YEAR(NOW())) AS UNSIGNED) AS y,
+         '${agg_interval}' AS mode
+) v
+JOIN (SELECT 1 q UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) q
+  ON v.mode='분기'
+
+UNION ALL
+
+-- 반기 (H1/H2)
+SELECT CONCAT('H', h.h) AS __text,                          -- H1, H2
+       CONCAT(v.y, '-H', h.h) AS __value                   -- YYYY-Hn
+FROM (
+  SELECT CAST(IF('${year_sel}' REGEXP '^[0-9]{4}$','${year_sel}',YEAR(NOW())) AS UNSIGNED) AS y,
+         '${agg_interval}' AS mode
+) v
+JOIN (SELECT 1 h UNION ALL SELECT 2) h
+  ON v.mode='반기';

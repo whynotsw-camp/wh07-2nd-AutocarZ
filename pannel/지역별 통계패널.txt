@@ -1,0 +1,66 @@
+[지역별 통계]
+
+- Bar Chart 
+- Title: 지역별 ${agg_interval} 통계 — ${year_sel} · ${sel_period}
+- 쿼리:
+
+WITH base AS (
+  SELECT
+    /* 정렬/그룹용 버킷 시작일 */
+    CASE
+      WHEN '${agg_interval}'='일'   THEN DATE(`time`)
+      WHEN '${agg_interval}'='월'   THEN DATE(DATE_FORMAT(`time`, '%Y-%m-01'))
+      WHEN '${agg_interval}'='년'   THEN STR_TO_DATE(CONCAT(YEAR(`time`), '-01-01'), '%Y-%m-%d')
+      WHEN '${agg_interval}'='분기' THEN STR_TO_DATE(CONCAT(YEAR(`time`), '-', LPAD(1 + 3*(QUARTER(`time`)-1), 2, '0'), '-01'), '%Y-%m-%d')
+      WHEN '${agg_interval}'='반기' THEN STR_TO_DATE(CONCAT(YEAR(`time`), '-', LPAD(CASE WHEN MONTH(`time`) <= 6 THEN 1 ELSE 7 END, 2, '0'), '-01'), '%Y-%m-%d')
+    END AS ts,
+
+    /* 표시 라벨 */
+    CASE
+      WHEN '${agg_interval}'='일'   THEN DATE_FORMAT(`time`, '%Y-%m-%d')
+      WHEN '${agg_interval}'='월'   THEN DATE_FORMAT(`time`, '%Y-%m')
+      WHEN '${agg_interval}'='년'   THEN DATE_FORMAT(`time`, '%Y')
+      WHEN '${agg_interval}'='분기' THEN CONCAT(YEAR(`time`), '-Q', QUARTER(`time`))
+      WHEN '${agg_interval}'='반기' THEN CONCAT(YEAR(`time`), CASE WHEN MONTH(`time`)<=6 THEN '-H1' ELSE '-H2' END)
+    END AS period,
+
+    branch,
+    freq
+  FROM roadkill_info
+  WHERE YEAR(`time`) = ${year_sel}
+    AND $__timeFilter(`time`)
+)
+SELECT
+  ts, period, branch,
+  SUM(freq) AS total_freq
+FROM base
+/* sel_period가 비어 있으면 전체 허용, 값이 있으면 매칭만 */
+WHERE (
+  '${agg_interval}' NOT IN ('월','분기','반기')
+  OR '${sel_period:csv}' = ''
+  OR FIND_IN_SET(period, REPLACE('${sel_period:csv}', '''', '')) > 0
+)
+GROUP BY ts, period, branch
+ORDER BY ts, branch;
+
+- embed:
+- [variable: agg_interval: 일, year_sel: 2025]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EC%9D%BC&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 월, year_sel: 2025, sel_period: 01]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EC%9B%94&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-01&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 월, year_sel: 2025, sel_period: 01,02]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EC%9B%94&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-01&var-sel_period=2025-02&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 월, year_sel: 2024, sel_period: 01,02]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EC%9B%94&var-year_sel=2024&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2024-01&var-sel_period=2024-02&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 월, year_sel: 2025, sel_period: 01,02,03]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EC%9B%94&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-01&var-sel_period=2025-02&var-sel_period=2025-03&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 년, year_sel: 2025]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EB%85%84&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 분기, year_sel: 2025, sel_period: Q1]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EB%B6%84%EA%B8%B0&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-Q1&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 분기, year_sel: 2025, sel_period: Q1,Q3]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EB%B6%84%EA%B8%B0&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-Q1&var-sel_period=2025-Q3&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 반기, year_sel: 2024, sel_period: H1]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EB%B0%98%EA%B8%B0&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-H1&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
+- [variable: agg_interval: 반기, year_sel: 2024, sel_period: H1,H2]
+<iframe src="http://localhost:3000/d-solo/45984338-3405-4249-9ea0-ef18696f639e/b5d4af0?orgId=1&from=1693181042578&to=1756339442578&timezone=browser&var-agg_interval=%EB%B0%98%EA%B8%B0&var-year_sel=2025&refresh=30m&showCategory=Panel%20options&editIndex=2&var-sel_period=2025-H1&var-sel_period=2025-H2&panelId=1&__feature.dashboardSceneSolo=true" width="450" height="200" frameborder="0"></iframe>
